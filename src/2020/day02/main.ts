@@ -24,13 +24,29 @@ const parse = async (): Promise<PasswordPolicy[]> => {
         .filter((a): a is PasswordPolicy => a !== null);
 };
 
-const isValid = (policy: PasswordPolicy): boolean => {
+const isPartOneValid = (policy: PasswordPolicy): boolean => {
     const count = policy.password.split('').filter(a => a === policy.letter).length;
     return policy.min <= count && count <= policy.max;
 };
 
+const isPartTwoValid = (policy: PasswordPolicy): boolean => {
+    const characters = policy.password.split('');
+
+    // Only really min/max for part one. Part two has them as start at 1 indices
+    const matchedFirstIndex = characters[policy.min - 1] === policy.letter;
+    const matchedSecondIndex = characters[policy.max - 1] === policy.letter;
+    const xor = (matchedFirstIndex ? 1 : 0) ^ (matchedSecondIndex ? 1 : 0);
+    return xor === 1;
+};
+
 const policies = await parse();
-const correctPolicies = policies
-    .map(a => isValid(a))
+const partOneCorrectPolicies = policies
+    .map(a => isPartOneValid(a))
     .filter(a => a);
-console.log(correctPolicies.length);
+
+const partTwoCorrectPolicies = policies
+    .map(a => isPartTwoValid(a))
+    .filter(a => a);
+
+console.log(partOneCorrectPolicies.length);
+console.log(partTwoCorrectPolicies.length);
