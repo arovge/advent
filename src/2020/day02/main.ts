@@ -1,3 +1,5 @@
+import { parseInput } from '../util.ts';
+
 interface PasswordPolicy {
     min: number;
     max: number;
@@ -8,20 +10,16 @@ interface PasswordPolicy {
 const regex = /(\d+)-(\d+) (\w): (\w+)/;
 
 const parse = async (): Promise<PasswordPolicy[]> => {
-    const input = await Deno.readTextFile('./input.txt');
+    const input = await parseInput();
     return input
-        .split('\n')
         .map(line => regex.exec(line))
-        .map(line => {
-            if (line == null) return null;
-            return {
-                min: parseInt(line[1], 10),
-                max: parseInt(line[2], 10),
-                letter: line[3],
-                password: line[4]
-            };
-        })
-        .filter((a): a is PasswordPolicy => a !== null);
+        .filter((line): line is RegExpExecArray => line !== null)
+        .map(line => ({
+            min: parseInt(line[1], 10),
+            max: parseInt(line[2], 10),
+            letter: line[3],
+            password: line[4]
+        }));
 };
 
 const isPartOneValid = (policy: PasswordPolicy): boolean => {
@@ -35,18 +33,17 @@ const isPartTwoValid = (policy: PasswordPolicy): boolean => {
     // Only really min/max for part one. Part two has them as start at 1 indices
     const matchedFirstIndex = characters[policy.min - 1] === policy.letter;
     const matchedSecondIndex = characters[policy.max - 1] === policy.letter;
-    const xor = (matchedFirstIndex ? 1 : 0) ^ (matchedSecondIndex ? 1 : 0);
-    return xor === 1;
+    const xor = matchedFirstIndex ? !matchedSecondIndex : matchedSecondIndex;
+    return xor;
 };
 
+const getCorrectPolicyCount = (policies: PasswordPolicy[], isValid: (policy: PasswordPolicy) => boolean): number => 
+    policies.reduce((acc, policy) => isValid(policy) ? acc + 1 : acc, 0);
+
 const policies = await parse();
-const partOneCorrectPolicies = policies
-    .map(a => isPartOneValid(a))
-    .filter(a => a);
 
-const partTwoCorrectPolicies = policies
-    .map(a => isPartTwoValid(a))
-    .filter(a => a);
+const correctPolicyCountForPartOne = getCorrectPolicyCount(policies, isPartOneValid);
+const correctPolicyCountForPartTwo = getCorrectPolicyCount(policies, isPartTwoValid);
 
-console.log(partOneCorrectPolicies.length);
-console.log(partTwoCorrectPolicies.length);
+console.log(correctPolicyCountForPartOne);
+console.log(correctPolicyCountForPartTwo);

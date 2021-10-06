@@ -1,3 +1,5 @@
+import { parseInput, multiply } from "../util.ts";
+
 const getTwoEntriesForSum = (numbers: number[], target: number): number[] => {
     for (let i = 0; i < numbers.length; ++i) {
         for (let j = i + 1; j < numbers.length; ++j) {
@@ -23,13 +25,11 @@ const getThreeEntriesForSum = (numbers: number[], target: number): number[] => {
 };
 
 const printProduct = async (sum: number, getEntries: (numbers: number[], sum: number) => number[]) => {
-    const input = await Deno.readTextFile('./input.txt');
-    const numbers = input
-        .split('\n')
-        .map(a => parseInt(a, 10));
+    const input = await parseInput();
+    const numbers = input.map(a => parseInt(a, 10));
 
     const entries = getEntries(numbers, sum);
-    const product = entries.reduce((acc, current) => acc * current, 1);
+    const product = multiply(entries);
     console.log(product);
 };
 
