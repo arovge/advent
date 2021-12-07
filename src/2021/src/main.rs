@@ -6,4 +6,5 @@ fn main() {
     day01::day_01::part_01();
     day01::day_01::part_02();
     day02::day_02::part_01();
+    day02::day_02::part_02();
 }

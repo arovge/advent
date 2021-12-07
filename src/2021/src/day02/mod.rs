@@ -32,7 +32,8 @@ pub mod day_02 {
         let contents = fs::read_to_string("./src/day02/input.txt")
             .expect("Something went wrong reading the file");
 
-        let commands = contents.lines().map(|x| x.parse::<Command>().unwrap());
+        let commands = contents.lines()
+                               .map(|x| x.parse::<Command>().unwrap());
 
         let mut depth = 0;
         let mut horizontal_position = 0;
@@ -47,5 +48,31 @@ pub mod day_02 {
 
         let product = depth * horizontal_position;
         assert_eq!(product, 2027977);
+    }
+
+    pub fn part_02() {
+        let contents = fs::read_to_string("./src/day02/input.txt")
+            .expect("Something went wrong reading the file");
+
+        let commands = contents.lines()
+                               .map(|x| x.parse::<Command>().unwrap());
+
+        let mut depth = 0;
+        let mut horizontal_position = 0;
+        let mut aim = 0;
+
+        for command in commands {
+            match command {
+                Command::Up(value) => aim -= value,
+                Command::Down(value) => aim += value,
+                Command::Forward(value) => {
+                    horizontal_position += value;
+                    depth += aim * value;
+                }
+            }
+        }
+
+        let product = depth * horizontal_position;
+        assert_eq!(product, 1903644897);
     }
 }
