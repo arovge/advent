@@ -5,7 +5,8 @@ pub mod day_01 {
         let contents = fs::read_to_string("./src/day01/input.txt")
             .expect("Something went wrong reading the file");
 
-        let depths = contents.lines().map(|x| x.parse::<i32>().unwrap());
+        let depths = contents.lines()
+                             .map(|x| x.parse::<i32>().unwrap());
 
         let mut sequential_increased_depths_count = 0;
         let mut last_depth = 0;
