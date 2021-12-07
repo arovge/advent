@@ -7,16 +7,20 @@ pub mod day_01 {
 
         let depths = contents.lines().map(|x| x.parse::<i32>().unwrap());
 
-        let increased_depths = depths.fold(
-            (0, 0),
-            |(increased_depths_count, last_depth), current_depth| match last_depth != 0 && current_depth > last_depth {
-                true => (increased_depths_count + 1, current_depth),
-                false => (increased_depths_count, current_depth)
+        let mut increased_depths_count = 0;
+        let mut last_depth = 0;
+
+        for (index, current_depth) in depths.enumerate() {
+            if index == 0 {
+                last_depth = current_depth;
+                continue;
             }
-        );
+            if current_depth > last_depth {
+                increased_depths_count += 1;
+            } 
+            last_depth = current_depth;
+        }
 
-        let increased_depths_count = increased_depths.0;
-
-        println!("Number of increased depths: {}", increased_depths_count);
+        assert_eq!(increased_depths_count, 1195);
     }
 }
