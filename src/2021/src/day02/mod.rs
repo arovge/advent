@@ -4,20 +4,19 @@ pub mod day_02 {
     use std::num::ParseIntError;
 
     enum Command {
-        Up(i32),
-        Down(i32),
-        Forward(i32)
+        Up(u32),
+        Down(u32),
+        Forward(u32)
     }
 
     impl str::FromStr for Command {
         type Err = ParseIntError;
 
         fn from_str(s: &str) -> Result<Self, Self::Err> {
-            let pieces: Vec<&str> = s.split(' ')
-                                     .collect();
+            let pieces: Vec<&str> = s.split(' ').collect();
 
             let command = pieces[0];
-            let value = pieces[1].parse::<i32>()?;
+            let value = pieces[1].parse::<u32>()?;
 
             match command {
                 "up" => Ok(Command::Up(value)),
@@ -32,8 +31,9 @@ pub mod day_02 {
         let contents = fs::read_to_string("./src/day02/input.txt")
             .expect("Something went wrong reading the file");
 
-        let commands = contents.lines()
-                               .map(|x| x.parse::<Command>().unwrap());
+        let commands = contents
+            .lines()
+            .map(|x| x.parse::<Command>().unwrap());
 
         let mut depth = 0;
         let mut horizontal_position = 0;
@@ -54,8 +54,9 @@ pub mod day_02 {
         let contents = fs::read_to_string("./src/day02/input.txt")
             .expect("Something went wrong reading the file");
 
-        let commands = contents.lines()
-                               .map(|x| x.parse::<Command>().unwrap());
+        let commands = contents
+            .lines()
+            .map(|x| x.parse::<Command>().unwrap());
 
         let mut depth = 0;
         let mut horizontal_position = 0;

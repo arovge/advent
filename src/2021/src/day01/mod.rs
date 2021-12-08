@@ -5,8 +5,9 @@ pub mod day_01 {
         let contents = fs::read_to_string("./src/day01/input.txt")
             .expect("Something went wrong reading the file");
 
-        let depths = contents.lines()
-                             .map(|x| x.parse::<i32>().unwrap());
+        let depths = contents
+            .lines()
+            .map(|x| x.parse::<u32>().unwrap());
 
         let mut sequential_increased_depths_count = 0;
         let mut last_depth = 0;
@@ -29,9 +30,9 @@ pub mod day_01 {
         let contents = fs::read_to_string("./src/day01/input.txt")
             .expect("Something went wrong reading the file");
 
-        let depths: Vec<i32> = contents
+        let depths: Vec<u32> = contents
             .lines()
-            .map(|x| x.parse::<i32>().unwrap())
+            .map(|x| x.parse::<u32>().unwrap())
             .collect();
 
         let mut sequential_increased_depths_count = 0;
